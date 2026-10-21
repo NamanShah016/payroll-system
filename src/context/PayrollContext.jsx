@@ -537,13 +537,21 @@ export const PayrollProvider = ({ children }) => {
     // Persist each payroll record to backend JSON server
     for (const record of runsWithIds) {
       try {
-        await fetch('http://localhost:3000/payrolls', {
+        const response = await fetch('http://localhost:3000/payrolls', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(record)
         });
+        if (response.ok) {
+          const savedRecord = await response.json();
+          if (savedRecord && savedRecord.id) {
+            setPayrolls((prev) =>
+              prev.map((p) => (p.id === record.id ? savedRecord : p))
+            );
+          }
+        }
       } catch (error) {
         console.error('Failed to post payroll record to backend:', error);
       }
