@@ -24,5 +24,124 @@
       "department": "Marketing",
       "salary": 38000
     }
+  ],
+  "payrolls": [
+    {
+      "id": "pay-001",
+      "month": "July",
+      "year": "2026",
+      "processedDate": "2026-07-31",
+      "employeeId": "emp-101",
+      "employeeName": "Sarah Jenkins",
+      "empCode": "EMP001",
+      "designation": "Lead Software Architect",
+      "department": "Engineering",
+      "panNo": "ABCDE1234F",
+      "bankName": "HDFC Bank",
+      "accountNumber": "50100293847291",
+      "earnings": {
+        "base": 95000,
+        "hra": 38000,
+        "medical": 1250,
+        "special": 15000,
+        "overtime": 0,
+        "stdBase": 95000,
+        "stdHra": 38000,
+        "stdMedical": 1250,
+        "stdSpecial": 15000,
+        "stdGross": 149250
+      },
+      "deductions": {
+        "epf": 1800,
+        "esi": 0,
+        "pt": 200,
+        "tds": 18750,
+        "lop": 0,
+        "total": 20750
+      },
+      "grossEarnings": 149250,
+      "netSalary": 128500,
+      "workDays": 26,
+      "lopDays": 0,
+      "overtimeHours": 0
+    },
+    {
+      "id": "pay-002",
+      "month": "July",
+      "year": "2026",
+      "processedDate": "2026-07-31",
+      "employeeId": "emp-102",
+      "employeeName": "Michael Chen",
+      "empCode": "EMP002",
+      "designation": "Senior Product Manager",
+      "department": "Product Management",
+      "panNo": "FGHIJ5678K",
+      "bankName": "ICICI Bank",
+      "accountNumber": "000401567890",
+      "earnings": {
+        "base": 80000,
+        "hra": 32000,
+        "medical": 1250,
+        "special": 10000,
+        "overtime": 0,
+        "stdBase": 80000,
+        "stdHra": 32000,
+        "stdMedical": 1250,
+        "stdSpecial": 10000,
+        "stdGross": 123250
+      },
+      "deductions": {
+        "epf": 1800,
+        "esi": 0,
+        "pt": 200,
+        "tds": 13500,
+        "lop": 0,
+        "total": 15500
+      },
+      "grossEarnings": 123250,
+      "netSalary": 107750,
+      "workDays": 26,
+      "lopDays": 0,
+      "overtimeHours": 0
+    },
+    {
+      "id": "pay-003",
+      "month": "July",
+      "year": "2026",
+      "processedDate": "2026-07-31",
+      "employeeId": "emp-105",
+      "employeeName": "Rohan Sharma",
+      "empCode": "EMP005",
+      "designation": "Junior Frontend Intern",
+      "department": "Engineering",
+      "panNo": "XYZAB7890C",
+      "bankName": "Kotak Mahindra Bank",
+      "accountNumber": "7483920192",
+      "earnings": {
+        "base": 15000,
+        "hra": 6000,
+        "medical": 1000,
+        "special": 1000,
+        "overtime": 937.5,
+        "stdBase": 15000,
+        "stdHra": 6000,
+        "stdMedical": 1000,
+        "stdSpecial": 1000,
+        "stdGross": 23000
+      },
+      "deductions": {
+        "epf": 1800,
+        "esi": 179.53,
+        "pt": 200,
+        "tds": 0,
+        "lop": 0,
+        "total": 2179.53
+      },
+      "grossEarnings": 23937.5,
+      "netSalary": 21757.97,
+      "workDays": 26,
+      "lopDays": 0,
+      "overtimeHours": 5
+    }
   ]
 }

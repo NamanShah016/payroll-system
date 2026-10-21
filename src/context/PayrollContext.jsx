@@ -345,6 +345,21 @@ export const PayrollProvider = ({ children }) => {
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [skillsFilter, setSkillsFilter] = useState('');
 
+  // Fetch payroll records from backend JSON Server on mount
+  useEffect(() => {
+    fetch('http://localhost:3000/payrolls')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch payrolls');
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPayrolls(data);
+        }
+      })
+      .catch((err) => console.log('Using local payroll fallback:', err));
+  }, []);
+
   // Sync to local storage
   useEffect(() => {
     localStorage.setItem('payroll_employees', JSON.stringify(employees));
@@ -509,17 +524,41 @@ export const PayrollProvider = ({ children }) => {
   };
 
   // Payroll actions
-  const processPayroll = (payrollRun) => {
+  const processPayroll = async (payrollRun) => {
     const runsWithIds = payrollRun.map((run) => ({
       ...run,
       id: `pay-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       processedDate: new Date().toISOString().split('T')[0]
     }));
+
+    // Optimistically update local React state
     setPayrolls((prev) => [...runsWithIds, ...prev]);
+
+    // Persist each payroll record to backend JSON server
+    for (const record of runsWithIds) {
+      try {
+        await fetch('http://localhost:3000/payrolls', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(record)
+        });
+      } catch (error) {
+        console.error('Failed to post payroll record to backend:', error);
+      }
+    }
   };
 
-  const deletePayrollRecord = (id) => {
+  const deletePayrollRecord = async (id) => {
     setPayrolls((prev) => prev.filter((p) => p.id !== id));
+    try {
+      await fetch(`http://localhost:3000/payrolls/${id}`, {
+        method: 'DELETE'
+      });
+    } catch (error) {
+      console.error('Failed to delete payroll record from backend:', error);
+    }
   };
 
   // Config actions
