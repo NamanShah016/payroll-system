@@ -1,0 +1,28 @@
+{
+  "employees": [
+    {
+      "id": "a8xk91pl",
+      "name": "Rahul Sharma",
+      "department": "HR",
+      "salary": 35000
+    },
+    {
+      "id": "m3v2q8zr",
+      "name": "Priya Patel",
+      "department": "Finance",
+      "salary": 42000
+    },
+    {
+      "id": "u7dn5wks",
+      "name": "Amit Verma",
+      "department": "IT",
+      "salary": 60000
+    },
+    {
+      "id": "k4b9wq2x",
+      "name": "Sneha Joshi",
+      "department": "Marketing",
+      "salary": 38000
+    }
+  ]
+}
