@@ -129,7 +129,7 @@ export default function PayrollHistory() {
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <Avatar style={{ width: '32px', height: '32px', borderRadius: '8px' }}>
                           <AvatarFallback style={{ background: 'var(--bg-main)', color: getDeptColor(p.department), fontSize: '0.85rem', fontWeight: 700 }}>
-                            {p.employeeName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+                            {(p.employeeName || '').split(' ').filter(Boolean).map(n => n[0]).join('').toUpperCase().slice(0, 2) || '??'}
                           </AvatarFallback>
                         </Avatar>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -36,13 +36,15 @@ const WigglingCard = ({ emp, i, x, cardWidth, gap, onCardClick }) => {
 
   const filter = useMotionTemplate`blur(${blur}px)`;
 
-  const getInitials = (name) =>
-    name
+  const getInitials = (name) => {
+    if (!name || typeof name !== 'string') return '??';
+    return name
       .split(/\s+/)
       .map((word) => word.slice(0, 1))
       .join('')
       .toUpperCase()
       .slice(0, 2);
+  };
 
   return (
     <motion.div

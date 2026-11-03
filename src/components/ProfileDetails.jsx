@@ -88,7 +88,7 @@ export default function ProfileDetails() {
             <Avatar style={{ width: '72px', height: '72px', borderRadius: '16px' }}>
               <AvatarImage src={selectedEmployee.avatar} alt={fullName} />
               <AvatarFallback style={{ background: 'var(--bg-main)', color: getDeptColor(department), fontSize: '1.6rem', fontWeight: 800 }}>
-                {fullName.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2)}
+                {(fullName || '').split(' ').filter(Boolean).map(p => p[0]).join('').toUpperCase().slice(0, 2) || '??'}
               </AvatarFallback>
             </Avatar>
 
