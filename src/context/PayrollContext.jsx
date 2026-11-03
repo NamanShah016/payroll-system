@@ -360,6 +360,29 @@ export const PayrollProvider = ({ children }) => {
       .catch((err) => console.log('Using local payroll fallback:', err));
   }, []);
 
+  // Fetch employees from backend JSON Server on mount
+  useEffect(() => {
+    fetch('http://localhost:3000/employees')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch employees');
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setEmployees(data.map(emp => ({
+            ...emp,
+            skills: Array.isArray(emp.skills) ? emp.skills : [],
+            onboardingSteps: Array.isArray(emp.onboardingSteps) ? emp.onboardingSteps : [],
+            avatar: emp.avatar || `https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(emp.fullName || 'User')}`,
+            bio: emp.bio || '',
+            experienceYears: Number(emp.experienceYears || 1),
+            locationType: emp.locationType || 'Remote'
+          })));
+        }
+      })
+      .catch((err) => console.log('Using local employee fallback:', err));
+  }, []);
+
   // Sync to local storage
   useEffect(() => {
     localStorage.setItem('payroll_employees', JSON.stringify(employees));
@@ -421,10 +444,37 @@ export const PayrollProvider = ({ children }) => {
             { id: 'step-1', name: 'Identity & Access Setup', completed: true, date: emp.joiningDate || new Date().toISOString().split('T')[0] }
           ]
     };
+    // Update local state immediately (optimistic)
     setEmployees((prev) => [newEmp, ...prev]);
+
+    // Persist to JSON Server backend
+    fetch('http://localhost:3000/employees', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newEmp)
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error('Failed to save employee to backend');
+      })
+      .then((savedEmp) => {
+        // Sync backend-assigned id if different
+        if (savedEmp && savedEmp.id && savedEmp.id !== newEmp.id) {
+          setEmployees((prev) =>
+            prev.map((e) => (e.id === newEmp.id ? savedEmp : e))
+          );
+        }
+      })
+      .catch((err) => console.error('addEmployee backend error:', err));
   };
 
   const updateEmployee = (id, updatedFields) => {
+    // Persist update to JSON Server backend
+    fetch(`http://localhost:3000/employees/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedFields)
+    }).catch((err) => console.error('updateEmployee backend error:', err));
     setEmployees((prev) =>
       prev.map((emp) => {
         if (emp.id === id) {
@@ -473,6 +523,10 @@ export const PayrollProvider = ({ children }) => {
     if (selectedEmployee && selectedEmployee.id === id) {
       setSelectedEmployee(null);
     }
+    // Delete from JSON Server backend
+    fetch(`http://localhost:3000/employees/${id}`, {
+      method: 'DELETE'
+    }).catch((err) => console.error('deleteEmployee backend error:', err));
   };
 
   const toggleOnboardingStep = (empId, stepId) => {
